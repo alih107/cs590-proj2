@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: services-configmap
+data:
+  creditcard-service-url: http://creditcard-service:8080
+  paypal-service-url: http://paypal-service:8080
+  banking-service-url: http://banking-service:8080
+  transaction-service-url: http://transaction-service:8080

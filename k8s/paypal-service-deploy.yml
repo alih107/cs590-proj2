@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paypal-service
+  labels:
+    app: paypal-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paypal-service
+  template:
+    metadata:
+      labels:
+        app: paypal-service
+    spec:
+      containers:
+        - name: paypal-service
+          image: whoiscan/paypal-service:0.1
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paypal-service
+  labels:
+    app: paypal-service
+    spring-boot: "true"
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    app: paypal-service
+  type: ClusterIP

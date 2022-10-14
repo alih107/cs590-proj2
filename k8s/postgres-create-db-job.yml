@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-create-db-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: postgres-create-db-job
+          image: postgres:latest
+          command: ["/bin/sh","-c"]
+          args: ["createdb -h postgres.default -U admin payments; createdb -h postgres.default -U admin accounts;"]
+          env:
+            - name: PGPASSWORD
+              value: admin
+      restartPolicy: Never
