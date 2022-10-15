@@ -22,14 +22,12 @@ public class AuthController {
         return authService.register(registerDto);
     }
 
-    @PostMapping
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> signin(@RequestBody LoginDto loginDto) {
         return authService.login(loginDto);
     }
 
-    @GetMapping
-    @RequestMapping("/verify")
+    @GetMapping("/verify")
     public ResponseEntity<VerifyDto> verify(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
         return authService.verify(authorizationHeader);
     }

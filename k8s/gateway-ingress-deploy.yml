@@ -2,17 +2,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gateway-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: sa-microservices.edu
-      http:
+    - http:
         paths:
           - path: /payments
             pathType: Prefix
             backend:
               service:
                 name: payment-service
+                port:
+                  number: 8080
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
                 port:
                   number: 8080
