@@ -9,7 +9,7 @@ spec:
         - name: postgres-create-db-job
           image: postgres:latest
           command: ["/bin/sh","-c"]
-          args: ["createdb -h postgres.default -U admin payments; createdb -h postgres.default -U admin accounts;"]
+          args: ["createdb -h postgres.default -U admin payments; createdb -h postgres.default -U admin accounts; createdb -h postgres.default -U admin products;"]
           env:
             - name: PGPASSWORD
               value: admin

@@ -12,8 +12,8 @@ public class ApiGatewayConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("auth-service", r -> r.path("/auth/**")
-                        .uri("http://auth-service:8080"))
+                .route("auth-service", r -> r.path("/auth/**").uri("http://auth-service:8080"))
+                .route("product-service", r -> r.path("/products/**").uri("http://product-service:8080"))
                 .build();
     }
 }
