@@ -9,3 +9,5 @@ data:
   transaction-service-url: http://transaction-service:8080
   auth-service-url: http://auth-service:8080
   order-service-url: http://order-service:8080
+  product-service-url: http://product-service:8080
+  payment-service-url: http://payment-service:8080

@@ -8,9 +8,10 @@ kubectl delete -f paypal-service-deploy.yml
 kubectl delete -f postgres-create-db-job.yml
 kubectl delete -f postgres-deploy.yml
 kubectl delete -f postgres-secret.yml
-kubectl delete -f service-secret.yml
+kubectl delete -f secret-service.yml
 kubectl delete -f services-configmap.yml
 kubectl delete -f product-service-deploy.yml
+kubectl delete -f order-service-deploy.yml
 kubectl delete -f transaction-service-deploy.yml
 
 minikube stop

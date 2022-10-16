@@ -56,9 +56,8 @@ metadata:
     spring-boot: "true"
 spec:
   ports:
-    - port: 80
-      targetPort: 8080
+    - port: 8080
       protocol: TCP
   selector:
     app: order-service
-  type: LoadBalancer
+  type: ClusterIP
