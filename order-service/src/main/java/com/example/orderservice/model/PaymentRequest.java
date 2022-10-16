@@ -1,4 +1,4 @@
-package com.example.paymentservice.model;
+package com.example.orderservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,5 +12,4 @@ public class PaymentRequest {
     private double amount;
     private String transactionType;
     private Long orderId;
-    private Long userId;
 }

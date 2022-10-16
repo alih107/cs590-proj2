@@ -20,6 +20,22 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          env:
+            - name: AUTH_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: auth-service-url
+            - name: ORDER_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: order-service-url
+            - name: PRODUCT_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: product-service-url
 ---
 apiVersion: v1
 kind: Service

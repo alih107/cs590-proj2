@@ -4,5 +4,5 @@ import com.example.paymentservice.model.PaymentRequest;
 import com.example.paymentservice.model.PaymentResponse;
 
 public interface PaymentService {
-    PaymentResponse processPayment(PaymentRequest paymentRequest, Long userId);
+    PaymentResponse processPayment(String authorizationHeader, PaymentRequest paymentRequest);
 }

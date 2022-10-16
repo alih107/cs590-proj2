@@ -9,15 +9,17 @@ import com.example.paymentservice.repository.PaymentRepository;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-
     @Value("${rest.transaction-service-url}")
     private String transactionSvcUrl;
-
+    @Value("${rest.api-secret}")
+    private String apiToken;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -25,17 +27,27 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public PaymentResponse processPayment(PaymentRequest request, Long userId) {
+    public PaymentResponse processPayment(String authorizationHeader,PaymentRequest request) {
+        if (!authorizationHeader.equals(apiToken)) {
+            return new PaymentResponse("Invalid api secret", "REJECTED");
+        }
         TransactionRequest transactionRequest = new TransactionRequest(request.getCardNumber(), request.getAmount(), request.getTransactionType());
 
-        TransactionResponse transactionResponse = restTemplate.postForObject(transactionSvcUrl + "/transactions/debit", transactionRequest, TransactionResponse.class);
+        TransactionResponse transactionResponse = makeTransaction(transactionRequest);
 
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setMessage(transactionResponse.getMessage());
         paymentResponse.setStatus(transactionResponse.getStatus());
 
-        Payment payment = new Payment(request.getCardNumber(), request.getAmount(), transactionResponse.getMessage(), transactionResponse.getStatus(), request.getTransactionType(), request.getOrderId(), userId);
+        Payment payment = new Payment(request.getCardNumber(), request.getAmount(), transactionResponse.getMessage(), transactionResponse.getStatus(), request.getTransactionType(), request.getOrderId(), request.getUserId());
         paymentRepository.save(payment);
         return paymentResponse;
+    }
+
+    private TransactionResponse makeTransaction(TransactionRequest transactionRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, apiToken);
+        HttpEntity<TransactionRequest> httpRequest = new HttpEntity<>(transactionRequest, headers);
+        return restTemplate.postForObject(transactionSvcUrl + "/transactions/debit", httpRequest, TransactionResponse.class);
     }
 }
