@@ -19,6 +19,12 @@ spec:
           image: whoiscan/paypal-service:0.1
           ports:
             - containerPort: 8080
+          env:
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-service
+                  key: api-secret
 ---
 apiVersion: v1
 kind: Service

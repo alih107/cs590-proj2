@@ -36,6 +36,11 @@ spec:
                 configMapKeyRef:
                   name: services-configmap
                   key: transaction-service-url
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-service
+                  key: api-secret
 ---
 apiVersion: v1
 kind: Service
