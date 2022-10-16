@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: banking-service
+          imagePullPolicy: Always
           image: whoiscan/banking-service:0.1
           ports:
             - containerPort: 8080

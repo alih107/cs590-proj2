@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: creditcard-service
+          imagePullPolicy: Always
           image: whoiscan/creditcard-service:0.1
           ports:
             - containerPort: 8080

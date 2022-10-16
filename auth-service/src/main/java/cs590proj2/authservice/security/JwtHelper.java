@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 public class JwtHelper {
     private final String SECRET = "4ea7ad365d23eb86d0645a7ccc01cb114f2c26150ac0218acc116d46de11a027";
-    private final long EXPIRATION_TIME = 1000 * 60 * 15; // 15 min
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 48; // 48 hours
 
     public String generateToken(Map<String, Object> claims) {
         return Jwts.builder()

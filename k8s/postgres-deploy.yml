@@ -20,11 +20,6 @@ spec:
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_MULTIPLE_DATABASES
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: database-names
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:

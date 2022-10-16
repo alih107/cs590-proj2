@@ -1,15 +1,13 @@
-package cs590proj2.authservice.model;
+package com.example.productservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class VerifyDto {
-
-    public VerifyDto(boolean success) {
-        this.success = success;
-    }
 
     private boolean success;
     private int userId;

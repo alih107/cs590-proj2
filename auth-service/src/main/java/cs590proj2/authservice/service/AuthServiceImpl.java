@@ -49,6 +49,7 @@ public class AuthServiceImpl implements AuthService{
         claims.put("email", user.getEmail());
         claims.put("shippingAddress", user.getShippingAddress());
         claims.put("paymentMethod", user.getPaymentMethod());
+        claims.put("role", user.getRole().getName());
         return ResponseEntity.ok().body(new LoginResponseDto(jwtHelper.generateToken(claims)));
     }
 
@@ -77,13 +78,16 @@ public class AuthServiceImpl implements AuthService{
                 Claims claims = jwtHelper.getClaims(token);
                 if (claims != null) {
                     VerifyDto verifyDto = new VerifyDto(
+                            true,
                             claims.get("user_id", Integer.class),
                             claims.get("username", String.class),
                             claims.get("firstName", String.class),
                             claims.get("lastName", String.class),
                             claims.get("email", String.class),
                             claims.get("shippingAddress", String.class),
-                            claims.get("paymentMethod", String.class)
+                            claims.get("paymentMethod", String.class),
+                            claims.get("role", String.class)
+
                     );
                     return ResponseEntity.ok().body(verifyDto);
                 }
@@ -91,6 +95,6 @@ public class AuthServiceImpl implements AuthService{
 
         }
 
-        return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.ok().body(new VerifyDto(false));
     }
 }

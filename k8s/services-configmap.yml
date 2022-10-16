@@ -7,3 +7,4 @@ data:
   paypal-service-url: http://paypal-service:8080
   banking-service-url: http://banking-service:8080
   transaction-service-url: http://transaction-service:8080
+  auth-service-url: http://auth-service:8080
