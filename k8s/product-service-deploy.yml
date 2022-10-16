@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: product-service
-          image: alih107/product-service:0.1
+          image: whoiscan/product-service:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

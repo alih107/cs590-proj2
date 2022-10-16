@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: alih107/auth-service:0.1
+          image: whoiscan/auth-service:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
