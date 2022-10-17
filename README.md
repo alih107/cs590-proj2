@@ -1,7 +1,7 @@
 # cs590-proj2
 CS 590 Software Architecture Mini project 2
 
-Team members:
+Team #2 members:
 - Alikhan Amandyk
 - Jamkhurbek Islomov ([whoiscan](https://github.com/whoiscan/))
 
