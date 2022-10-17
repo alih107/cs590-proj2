@@ -35,3 +35,5 @@ For database, we deployed single database server service that has multiple datab
 In addition to database service, we used Job object to create databases in postgres-service.
 
 We used Secret objects to store database credentials and api secret, and ConfigMap to store URL addresses of services.
+
+Also added using spring-cloud-starter-circuitbreaker-resilience4j for circuit breaker

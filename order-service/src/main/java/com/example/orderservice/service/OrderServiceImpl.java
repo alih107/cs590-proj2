@@ -6,7 +6,10 @@ import com.example.orderservice.model.*;
 import com.example.orderservice.repository.OrderProductRepository;
 import com.example.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderProductRepository orderProductRepository;
     private final RestTemplate restTemplate;
     private final TokenService tokenService;
+
+    @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public ResponseEntity<OrderResponse> placeOrder(String authHeader, OrderRequest orderRequest) {
@@ -63,9 +69,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private PaymentResponse processPayment(PaymentRequest paymentRequest) {
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, apiToken);
         HttpEntity<PaymentRequest> request = new HttpEntity<>(paymentRequest, headers);
-        return restTemplate.postForObject(paymentSvcUrl + "/payments/process", request, PaymentResponse.class);
+        return circuitBreaker.run(() -> restTemplate.postForObject(paymentSvcUrl + "/payments/process", request, PaymentResponse.class),
+                throwable -> new PaymentResponse("Payment service failed", "REJECTED"));
     }
 }

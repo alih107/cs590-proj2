@@ -9,6 +9,8 @@ import com.example.paymentservice.repository.PaymentRepository;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class PaymentServiceImpl implements PaymentService {
     private RestTemplate restTemplate;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
 
 
     @Override
@@ -45,9 +49,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private TransactionResponse makeTransaction(TransactionRequest transactionRequest) {
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, apiToken);
         HttpEntity<TransactionRequest> httpRequest = new HttpEntity<>(transactionRequest, headers);
-        return restTemplate.postForObject(transactionSvcUrl + "/transactions/debit", httpRequest, TransactionResponse.class);
+        return circuitBreaker.run(() -> restTemplate.postForObject(transactionSvcUrl + "/transactions/debit", httpRequest, TransactionResponse.class),
+                throwable -> new TransactionResponse("Transaction service failed", "REJECTED"));
     }
 }
